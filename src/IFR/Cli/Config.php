@@ -58,7 +58,45 @@ class Config
 			$config = array_replace_recursive($config, $config_local);
 		}
 
+		$config = self::nesting($config);
+
 		self::$config = self::object($config[$stage]);
+
+		return self::$config;
+	}
+	static function nesting($array = array())
+	{
+		$nested = false;
+
+		foreach($array as $key=>$value)
+		{
+			if(strpos($key,'.')!==false)
+			{
+				$nested = true;
+
+				$path = explode('.',$key);
+				$root = array_shift($path);
+				$path = join('.',$path);
+				$array[$root][$path] = $value;
+
+				unset($array[$key]);
+			}
+		}
+
+		foreach($array as $key=>$value)
+		{
+			if(is_array($value))
+			{
+				$array[$key] = self::nesting($array[$key]);;
+			}
+		}
+
+		if($nested)
+		{
+			$array = self::nesting($array);
+		}
+
+		return $array;
 	}
 
 	static function object($array = array())
