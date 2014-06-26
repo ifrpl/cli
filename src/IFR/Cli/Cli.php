@@ -9,6 +9,8 @@
 
 namespace IFR\Cli;
 
+use IFR\Cli\Object;
+
 class Cli
 {
 	public $param = null;
@@ -17,9 +19,9 @@ class Cli
 
 	public function __construct()
 	{
-		$this->param = object();
-		$this->flag = object();
-		$this->input = object();
+		$this->param = new Object();
+		$this->flag = new Object();
+		$this->input = new Object();
 	}
 	/**
 	 * @param array $argv
